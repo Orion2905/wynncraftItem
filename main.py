@@ -7,6 +7,7 @@ import json
 from tkinter import colorchooser
 import itertools
 from tkinter import simpledialog
+from test import checkCombo
 
 
 # https://fiverr-res.cloudinary.com/image/upload/q_auto,f_pdf/v1/secured-attachments/message/attachments/98713d90f5d706ea9c8f6a3468d10ea3-1627171155154/Commission%20orionpy-%20wynncraft%20builds.pdf?__cld_token__=exp=1627220906~hmac=ff788bdca0d124ecfee26f0e8a2baf9e649381e87c3b723ed6bab3001a6308b8
@@ -24,6 +25,20 @@ from tkinter import simpledialog
 # with open(f"items_{category}.txt", "w") as f2:
     # f2.write(json.dumps(json_r))
 # f.close()
+
+class PrintLogger(): # create file like object
+    def __init__(self, textbox): # pass reference to text widget
+
+        self.textbox = textbox # keep ref
+
+    def write(self, text):
+        self.textbox.config(state=tk.NORMAL)
+        self.textbox.insert(tk.END, text) # write text to textbox
+            # could also scroll to end of textbox here to make sure always visible
+        self.textbox.config(state=tk.DISABLED)
+
+    def flush(self): # needed for file like object
+        pass
 
 class MenuBar:
 
@@ -98,17 +113,20 @@ class MainApp: # The main class of the project
         items_search = tk.Button(self.frame_3, text="Search items by category", command=self.search_items_by_category)
         items_search.grid(row=0, column=1)
 
-        csv_btn = tk.Button(self.frame_3, text="Generate Csv", command=self.get_csv)
-        csv_btn.grid(row=0, column=3)
-
-        csv_btn = tk.Button(self.frame_3, text="Generate Csv", command=self.get_csv)
-        csv_btn.grid(row=0, column=3)
-
         weapon_btn = tk.Button(self.frame_3, text="Combine item by weapon", command=self.combination_byWeapon)
-        weapon_btn.grid(row=0, column=4)
+        weapon_btn.grid(row=0, column=3)
+
+        all_btn = tk.Button(self.frame_3, text="Combine item", command=self.combination_All)
+        all_btn.grid(row=0, column=4)
+
+        self.csv_btn = tk.Button(self.frame_3, text="Generate Csv", command=self.get_csv)
 
         self.out_label = tk.Label(self.frame_4)
         self.out_label.pack(fill=BOTH, expand=True)
+
+        self.t = tk.Text(self.frame_4, state=tk.DISABLED, fg="black", height=25,
+                         border=3)
+        self.t.pack()
 
         self.frame_3.grid(row=3)
         self.frame_4.grid(row=4)
@@ -125,6 +143,9 @@ class MainApp: # The main class of the project
         self.menubar = MenuBar(self)
         self.frame.pack()
 
+        pl = PrintLogger(self.t)
+        sys.stdout = pl
+
     # Class functions
 
     def search_item_by_name(self): # search single item
@@ -138,9 +159,8 @@ class MainApp: # The main class of the project
                 string = ""
                 for x in i:
                     string = string + f"{x} = {i[x]}\n"
-                    print(f"{x} = {i[x]}")
+                    #print(f"{x} = {i[x]}")
                 self.out_label['text'] = string
-
         r.close()
 
     def search_items_by_category(self): # search multiple items by category
@@ -161,36 +181,68 @@ class MainApp: # The main class of the project
         self.scrollbar.pack(side=RIGHT, fill=BOTH)
         r.close()
 
-    def test_func(self):
+    def print_combo(self):
+        f = open('test.txt', 'r')
+
+
+    def combination_All(self):
+        self.csv_btn.grid(row=1, column=3)
+        self.root.update()
+        count = simpledialog.askinteger(title="number of combinations",
+                                        prompt="How many combinations do you want to get?")
         r = open(f"items/test.txt", "r", encoding="utf-8", newline='')
         json_data = json.loads(r.read())
         f = open(f"test.txt", "w")
-        items_list = []
-        for i in json_data['items']:
-            items_list.append(str(i))
-        for L in range(0, len(items_list) + 1):
+
+        cnt = 0
+        for L in range(0, len(json_data['items']) + 1):
             # print(len(json_data['items']) + 1)
-            for subset in set(itertools.combinations(items_list, L)):
-                print(len(subset))
+            for subset in itertools.combinations(json_data['items'], 9):
+                # print(len(subset))
                 if len(subset) >= 9:
-                    f.write(f"{str(str(subset).encode('utf-8'))}\n")
+                    #print(subset)
+                    print("VERIFICA", checkCombo(subset))
+                    if checkCombo(subset):
+                        if cnt > count-1 :
+                            break
+                        cnt += 1
+                        print("CONTATORE %s" % str(cnt))
+                        text = str(str(subset).encode('utf-8')).replace('\\', '')
+                        text = text.replace("b'(", "")
+                        text = text.replace(")", "")
+                        text = text[0:-1]
+                        f.write(f"{text}\n")
+
 
         f.close()
         r.close()
 
     def combination_byWeapon(self):
+        self.csv_btn.grid(row=1, column=3)
         weapon = simpledialog.askstring(title="Choose the weapon", prompt="Choose the weapon")
-        r = open(f"items/test.txt", "r", encoding="utf-8", newline='')
+        count = simpledialog.askinteger(title="number of combinations",
+                                        prompt="How many combinations do you want to get?")
+        r = open(f"items/items.txt", "r", encoding="utf-8", newline='')
         json_data = json.loads(r.read())
         f = open(f"test.txt", "w")
+
+        cnt = 0
         for L in range(0, len(json_data['items']) + 1):
-            #print(len(json_data['items']) + 1)
+            # print(len(json_data['items']) + 1)
             for subset in itertools.combinations(json_data['items'], 9):
-                print(len(subset))
+                #print(len(subset))
                 if len(subset) >= 9:
-                    if weapon in subset:
-                        print("SIIII")
-                    f.write(f"{str(str(subset).encode('utf-8'))}\n")
+                    print(subset)
+                    if weapon in str(subset):
+                        print("VERIFICA",checkCombo(subset))
+                        if checkCombo(subset):
+                            cnt += 1
+                            print("CONTATORE %s" % str(cnt))
+                            text = str(str(subset).encode('utf-8')).replace('\\', '')
+                            f.write(f"{text}\n")
+
+                if cnt > count:
+                    break
 
         f.close()
         r.close()
