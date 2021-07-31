@@ -135,7 +135,7 @@ class MainApp: # The main class of the project
 
         # Search bar
         y = tk.StringVar()
-        self.input_1 = tk.Entry(self.frame_2, textvariable=y, width=166)
+        self.input_1 = tk.Entry(self.frame_2, textvariable=y, width=150)
         self.input_1.grid(sticky="S", ipady=15)
 
         item_search = tk.Button(self.frame_3, text="Search for a single item", command=self.search_item_by_name)
@@ -150,13 +150,11 @@ class MainApp: # The main class of the project
         weapon_btn = tk.Button(self.frame_3, text="Combine random item", command=self.combination_All)
         weapon_btn.grid(row=0, column=3)
 
-        show_combo = tk.Button(self.frame_3, text="Show random combo", command=self.show_combo)
+        show_combo = tk.Button(self.frame_3, text="Show combos", command=self.show_combo)
         show_combo.grid(row=1, column=3)
 
         all_btn = tk.Button(self.frame_3, text="Combine item by weapon", command=self.combination_byWeapon)
         all_btn.grid(row=0, column=4)
-
-        self.csv_btn = tk.Button(self.frame_3, text="Generate Csv", command=self.get_csv)
 
         self.out_label = tk.Label(self.frame_4)
         self.out_label.pack(fill=BOTH, expand=True)
@@ -237,10 +235,21 @@ class MainApp: # The main class of the project
             if i['name'] == self.input_1.get():
                 string = ""
                 for x in i:
+                    if len(str(i[x])) > 100:
+                        s = i[x][:100]
+                        s1 = i[x][100:]
+                        i[x] = s + "\n" + s1
+
+                        print(s)
+                        print(s1)
+
+
                     string = string + f"{x} = {i[x]}\n"
                     #print(f"{x} = {i[x]}")
                 self.out_label['text'] = string
         r.close()
+
+        # function end
 
     def search_items_by_category(self): # search multiple items by category
         # url = f"https://api.wynncraft.com/public_api.php?action=itemDB&category={self.input_1.get()}"
@@ -260,16 +269,18 @@ class MainApp: # The main class of the project
         self.scrollbar.pack(side=RIGHT, fill=BOTH)
         r.close()
 
-    def print_combo(self):
-        f = open('test.txt', 'r')
-
+        #function end
 
     def combination_byWeapon(self):
-
+        print("START")
         if customFile():
             print(customFile())
+            file = customFile()
+            temp_file = file.split('.txt')[0] + "_temp.txt"
         else:
             print("No file selected")
+            file = ""
+            temp_file = ""
 
         count = simpledialog.askinteger(title="number of combinations",
                                         prompt="How many combinations do you want to get?")
@@ -279,7 +290,9 @@ class MainApp: # The main class of the project
         combination_files = [
             'boots', 'bracelet', 'chestplate', 'helmet', 'leggings', 'necklace', 'ring', 'ring', weapon
         ]
-        f = open(f"test_temp.txt", "a", encoding="utf-8")
+        fo = open(f"{temp_file}", "w")
+        fo.close()
+        f = open(f"{temp_file}", "a", encoding="utf-8")
         f.write("{")
         to_add = ""
         break_count = 0
@@ -296,9 +309,11 @@ class MainApp: # The main class of the project
                 json_data = json.loads(r.read())
                 items = json_data['items']
                 value = random.randint(0, len(items))
+
                 #print("Lunghezza:",len(items))
                 #print("valore random:",value)
                 r.close()
+                break_count = 0
                 for j in items:
                     self.root.update()
                     #print("A")
@@ -310,29 +325,67 @@ class MainApp: # The main class of the project
                         break
 
             print(checkCombo(tuple(combo_list)))
+
+            if " 'addedLore': " in str(combo_list):
+                for y in combo_list:
+                    if " 'addedLore': '" in str(y):
+                        #print("si", y)
+                        a = str(y).find(" 'addedLore': '")
+                        b = str(y).find(", 'sockets':")
+                        #print("QUI", a, b)
+                        #print("ECCOLO",str(y)[a:b])
+                        #print("SIII", str(y).replace(str(y)[a:b+1], ""))
+                        #print("da rimpiazzare",str(y)[a:b+1])
+                        combo_list = str(combo_list).replace(str(y)[a:b+1], "")
+
         #print(combo_list)
             f.write(
                 '"combo_'+str(i)+'":'
                 +str(combo_list).replace("'", '"')
                 .replace('None', 'null').replace('Durum"s', "Durum's")
-                .replace('True', 'true').replace('"s', "'s").replace(" 's", ' "s').replace('""', '"')+','
+                .replace('True', 'true').replace('"s', "'s").replace(" 's", ' "s')
+                .replace('""', '"')
+                .replace('"ll', "'ll").replace("\\", "").replace('"re', "'re")
+                .replace(" 'r", ' "r').replace('s"', "s'").replace("Boots'", 'Boots"')
+                .replace("restrictions'", 'restrictions"').replace("Treads'", 'Treads"')
+                .replace("intelligencePoints'", 'intelligencePoints"').replace("sockets'", 'sockets"')
+                .replace('"a', "'a")
+                .replace("dexterityPoints'", 'dexterityPoints"').replace("',", '",')
+                .replace("':", '":').replace(" 'a", ' "a').replace('"t ', "'t ").replace('"enhanced"', "'enhanced'")
+                .replace('," t', ",' t").replace('"ve', "'ve").replace('" -', "' -").
+                replace('"one with the wind"', "'one with the wind'").replace('"gem"', 'gem')
+                .replace('"  ', '').replace('"is', "is").replace(' "I ', " I ")
+                .replace('T-shirt"', "T-shirt").replace(' "A ', " 'A ").replace('"GREED"', 'GREED')
+                .replace(" 'A r", ' "A r').replace(" 'A l", ' "A l').replace('I"m', "I'm")
+                .replace('[GREED]', '"[GREED]"').replace(" 'A s", ' "A s').replace(" 'A F", ' "A F')
+                .replace(" 'A G", ' "A G').replace(" 'A m", ' "A m')
+                .replace('"r', "'r").replace(" 'r", ' "r').replace('Ol" H', "Ol' H").replace('"Beware', 'Beware') + ','
             )
 
         self.root.update()
         f.write("}")
         f.close()
-        with open("test.txt", "w") as f1:
-            with open("test_temp.txt", "r") as f2:
+        with open(f"{file}", "w") as f1:
+            with open(f"{temp_file}", "r") as f2:
                 for lines in f2:
                     #print(lines)
                     f1.write(lines.replace('}],}', '}]}'))
+
+        os.remove(f"{temp_file}.txt")
         print("END")
 
+        #function end
+
     def combination_All(self):
+        print("START")
         if customFile() :
             print(customFile())
+            file = customFile()
+            temp_file = file.split('.txt')[0] + "_temp.txt"
         else :
-            print("No")
+            print("No file selected")
+            file = ""
+            temp_file = ""
         count = simpledialog.askinteger(title="number of combinations",
                                         prompt="How many combinations do you want to get?")
         weapon = "bow"
@@ -342,7 +395,9 @@ class MainApp: # The main class of the project
         combination_files = [
             'boots', 'bracelet', 'chestplate', 'helmet', 'leggings', 'necklace', 'ring', 'ring', weapon
         ]
-        f = open(f"test_temp.txt", "a", encoding="utf-8")
+        fo = open(f"{temp_file}", "w")
+        fo.close()
+        f = open(f"{temp_file}", "a", encoding="utf-8")
         f.write("{")
         to_add = ""
         break_count = 0
@@ -360,47 +415,77 @@ class MainApp: # The main class of the project
                 json_data = json.loads(r.read())
                 items = json_data['items']
                 value = random.randint(0, len(items))
-                # print("Lunghezza:",len(items))
-                # print("valore random:",value)
+                #print("Lunghezza:",len(items))
+                #print("valore random:",value)
                 r.close()
-                for j in items :
+                break_count = 0
+                for j in items:
                     self.root.update()
                     # print("A")
                     break_count += 1
                     to_add = j
-                    if break_count > value :
+                    #print(break_count, value)
+                    if break_count > value:
+                        #print(to_add)
                         combo_list.append(to_add)
                         # print(to_add)
                         break
 
             print(checkCombo(tuple(combo_list)))
-            # print(combo_list)
+            #print(combo_list)
+            #print(str(combo_list))
+            test = ""
+            if " 'addedLore': " in str(combo_list):
+                for y in combo_list:
+                    if " 'addedLore': '" in str(y):
+                        #print("si", y)
+                        a = str(y).find(" 'addedLore': '")
+                        b = str(y).find(", 'sockets':")
+                        #print("QUI", a, b)
+                        #print("ECCOLO",str(y)[a:b])
+                        #print("SIII", str(y).replace(str(y)[a:b+1], ""))
+                        #print("da rimpiazzare",str(y)[a:b+1])
+                        combo_list = str(combo_list).replace(str(y)[a:b+1], "")
+
+
             f.write(
                 '"combo_' + str(i) + '":'
                 + str(combo_list).replace("'", '"')
                 .replace('None', 'null').replace('Durum"s', "Durum's")
-                .replace('True', 'true').replace('"s', "'s").replace(" 's", ' "s').replace('""', '"') + ','
+                .replace('True', 'true').replace('"s', "'s").replace(" 's", ' "s')
+                .replace('""', '"').replace('"ll', "'ll")
+                .replace("\\", "")
+                .replace('"re', "'re").replace(" 'r", ' "r')
+                .replace('s"', "s'").replace("Boots'", 'Boots"')
+                .replace("restrictions'", 'restrictions"').replace("Treads'", 'Treads"').replace('"a', "'a")
+                .replace("intelligencePoints'", 'intelligencePoints"').replace("sockets'", 'sockets"')
+                .replace("dexterityPoints'", 'dexterityPoints"').replace("',", '",')
+                .replace("':", '":').replace(" 'a", ' "a').replace('"t ', "'t ")
+                .replace('"enhanced"', "'enhanced'").replace('," t', ",' t")
+                .replace('"ve', "'ve").replace('" -', "' -").replace('"one with the wind"', "'one with the wind'")
+                .replace('"gem"', 'gem').replace('"  ', '').replace('"is', "is").replace(' "I ', " I ")
+                .replace('T-shirt"', "T-shirt").replace(' "A ', " 'A ").replace('"GREED"', 'GREED')
+                .replace(" 'A r", ' "A r').replace(" 'A l", ' "A l').replace('I"m', "I'm")
+                .replace('[GREED]', '"[GREED]"').replace(" 'A s", ' "A s').replace(" 'A F", ' "A F')
+                .replace(" 'A G", ' "A G').replace(" 'A m", ' "A m').replace('"r', "'r").replace(" 'r", ' "r')
+                .replace('Ol" H', "Ol' H").replace('"Beware', 'Beware') + ','
             )
 
         self.root.update()
         f.write("}")
         f.close()
-        with open("test.txt", "w") as f1 :
-            with open("test_temp.txt", "r") as f2 :
-                for lines in f2 :
+        with open(f"{file}", "w", encoding="utf-8") as f1 :
+            with open(f"{temp_file}", "r", encoding="utf-8") as f2 :
+                for lines in f2:
                     # print(lines)
                     f1.write(lines.replace('}],}', '}]}'))
+
+        os.remove(f"{temp_file}")
         print("END")
 
-    def get_csv(self):
-        with open("combination.csv", "w") as f:
-            pass
+        #function end
 
-    def download_items(self):
-        pass
-
-    # MenuBar functions
-
+    # MenuBar functions for custom color
     def custom_color(self):
         color_code = colorchooser.askcolor(title="Choose color")
         if color_code[1] == "#000000":
@@ -408,6 +493,8 @@ class MainApp: # The main class of the project
         else:
             self.root['background'] = color_code[1]
         print(color_code)
+
+    #function end
 
 if __name__ == "__main__":
     root = tk.Tk()

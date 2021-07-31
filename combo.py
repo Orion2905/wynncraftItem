@@ -106,6 +106,12 @@ class Root:
         back = tk.Button(self.frame_3, text="<<<", width=10, bg="red", command=self.back)
         back.grid(row=0, column=0)
 
+        self.page_s = tk.Entry(self.frame_3)
+        self.page_s.grid(row=0, column=2)
+
+        page_search = tk.Button(self.frame_3, text="🔎", width=10, command=self.page_search)
+        page_search.grid(row=1, column=2)
+
         csv = tk.Button(self.frame_3, text="CSV", width=10)
         csv.grid(row=1, column=0)
 
@@ -117,6 +123,12 @@ class Root:
 
         self.frame2.pack()
         self.frame_3.pack()
+
+    def page_search(self):
+        self.page = int(self.page_s.get())
+        self.root.update()
+        self.show()
+        print(self.page)
 
     def next(self):
         self.page += 1
@@ -140,42 +152,55 @@ class Root:
             file = "test.txt"
 
         column_to_show = [
-            'Name', 'Category', 'Type','Health', 'Health regen', 'Health regen(%)', 'Life Steal', 'Defense', 'Intelligence',
-            'Strenght', 'Dexterity',
-            'Agility', 'Tier', 'Attack speed', 'Mana Regeneration', 'Mana steal', 'Skill points', 'Soul Point regen',
-            'Walk Speed', 'Sprint', 'Sprint regen', 'Jump', 'Loot bonus', 'Xp Bonus', 'Loot quality', 'Spell cost',
-            'Poison', 'Exploding', 'Main attack', 'Spell damage',
-            'Neutral', 'Fire', 'Earth', 'Water', 'Air', 'Thunder',
-            'Neutral', 'Fire', 'Earth', 'Water', 'Air', 'Thunder',
-            'Neutral', 'Fire', 'Earth', 'Water', 'Air', 'Thunder',
-            'Neutral', 'Fire', 'Earth', 'Water', 'Air', 'Thunder',
-            'Neutral', 'Fire', 'Earth', 'Water', 'Air', 'Thunder'
+            'Name', 'Category', 'Type', 'Tier', 'Damage', 'fireDamage', 'waterDamage', 'airDamage', 'thunderDamage',
+            'earthDamage', 'attackSpeed',
+            'health', 'fireDefense', 'waterDefense', 'airDefense', 'thunderDefense', 'earthDefense', 'strength',
+            'dexterity', 'intelligence', 'agility', 'defense', 'healthRegen', 'manaRegen', 'spellDamage', 'damageBonus',
+            'lifeSteal', 'manaSteal', 'xpBonus', 'lootBonus',
+            'reflection', 'strengthPoints', 'dexterityPoints', 'intelligencePoints', 'agilityPoints', 'defensePoints',
+            'thorns', 'exploding', 'speed', 'attackSpeedBonus', 'poison', 'healthBonus',
+            'soulPoints', 'emeraldStealing', 'healthRegenRaw', 'spellDamageRaw', 'damageBonusRaw', 'bonusFireDamage',
+            'bonusWaterDamage', 'bonusAirDamage', 'bonusThunderDamage', 'bonusEarthDamage', 'bonusFireDefense',
+            'bonusWaterDefense',
+            'bonusAirDefense', 'bonusThunderDefense', 'bonusEarthDefense'
         ]
 
-        totalDict = {'Health':0, 'Health regen':0, 'Health regen(%)':0, 'Life Steal':0, 'Defense':0, 'Intelligence':0,
-            'Strenght':0, 'Dexterity':0,
-            'Agility':0, 'Tier':0, 'Attack speed':0, 'Mana Regeneration':0, 'Mana steal':0, 'Skill points':0, 'Soul Point regen':0,
-            'Walk Speed':0, 'Sprint':0, 'Sprint regen':0, 'Jump':0, 'Loot bonus':0, 'Xp Bonus':0, 'Loot quality':0, 'Spell cost':0,
-            'Poison':0, 'Exploding':0, 'Main attack':0, 'Spell damage':0,
-            'Neutral':0, 'Fire':0, 'Earth':0, 'Water':0, 'Air':0, 'Thunder':0,
-            'Neutral1':0, 'Fire1':0, 'Earth1':0, 'Water1':0, 'Air1':0, 'Thunder1':0,
-            'Neutral2':0, 'Fire2':0, 'Earth2':0, 'Water2':0, 'Air2':0, 'Thunder2':0,
-            'Neutral3':0, 'Fire3':0, 'Earth3':0, 'Water3':0, 'Air3':0, 'Thunder3':0,
-            'Neutral4':0, 'Fire4':0, 'Earth4':0, 'Water4':0, 'Air4':0, 'Thunder4':0}
+        totalDict = {
+            'Name':'TOTAL BUILD', 'Category':0, 'Type':0, 'Tier':0, 'Damage':'', 'fireDamage':'',
+            'waterDamage':'', 'airDamage':'', 'thunderDamage':'',
+            'earthDamage':'', 'attackSpeed':'',
+            'health':0, 'fireDefense':0, 'waterDefense':0, 'airDefense':0, 'thunderDefense':0, 'earthDefense':0,
+            'strength':0,
+            'dexterity':0, 'intelligence':0, 'agility':0,
+            'defense':0, 'healthRegen':0, 'manaRegen':0, 'spellDamage':0, 'damageBonus':0,
+            'lifeSteal':0, 'manaSteal':0, 'xpBonus':0, 'lootBonus':0,
+            'reflection':0, 'strengthPoints':0, 'dexterityPoints':0, 'intelligencePoints':0,
+            'agilityPoints':0, 'defensePoints':0,
+            'thorns':0, 'exploding':0, 'speed':0, 'attackSpeedBonus':0, 'poison':0, 'healthBonus':0,
+            'soulPoints':0, 'emeraldStealing':0, 'healthRegenRaw':0, 'spellDamageRaw':0, 'damageBonusRaw':0,
+            'bonusFireDamage':0,
+            'bonusWaterDamage':0, 'bonusAirDamage':0, 'bonusThunderDamage':0, 'bonusEarthDamage':0,
+            'bonusFireDefense':0,
+            'bonusWaterDefense':0,
+            'bonusAirDefense':0, 'bonusThunderDefense':0, 'bonusEarthDefense':0
+                     }
 
 
-        r = open("test.txt", "r")
+        r = open(f"{file}", "r")
         json_data = json.loads(r.read())
         cnt = 0
         self.title2['text'] = "combo_"+str(self.page)
         combos = json_data['combo_'+str(self.page)]
         cnt2 = 1
         cnt3 = 0
+        sum1 = 0
+        sum2 = 0
         for j in column_to_show:
             tk.Label(self.combo_frame, text=j, relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=0, column=cnt, pady=10)
             cnt += 1
         for i in combos:
-            #print(i['healthRegen'])
+
+            #print(i['damage'])
             tk.Label(self.combo_frame, text=i['name'], relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=cnt2, column=0)
             tk.Label(self.combo_frame, text=i['category'], relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=cnt2, column=1)
 
@@ -184,96 +209,502 @@ class Root:
             except:
                 tk.Label(self.combo_frame, text=i['accessoryType'], relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=cnt2, column=2)
 
+
+            tk.Label(self.combo_frame, text=i['tier'], relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=cnt2, column=3)
+
             try:
-                tk.Label(self.combo_frame, text=i['health'], relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=cnt2, column=3)
+                tk.Label(self.combo_frame, text=i['damage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=4)
+
+                pre = i['damage'].split("-")
+                #print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                #print(final)
+                totalDict['Damage'] = totalDict['Damage'] + final
+
             except:
-                tk.Label(self.combo_frame, text="0", relief="groove", width=15, font=("Arial", 8, "bold")).grid(row=cnt2, column=3)
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=4)
 
-            tk.Label(self.combo_frame, text=i['healthRegen'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=4)
+            sum1, sum2 = 0, 0
+            #fire damage
+            try:
+                tk.Label(self.combo_frame, text=i['fireDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=5)
 
-            tk.Label(self.combo_frame, text=i['healthRegenRaw'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=5)
+                pre = i['fireDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['fireDamage'] = totalDict['fireDamage'] + final
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=5)
 
-            tk.Label(self.combo_frame, text=i['lifeSteal'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=6)
+            #water
+            sum1 = 0
+            sum2 = 0
+            try:
+                tk.Label(self.combo_frame, text=i['waterDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=6)
+                pre = i['waterDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['waterDamage'] = totalDict['waterDamage'] + final
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=6)
 
-            tk.Label(self.combo_frame, text=i['defense'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=7)
+            #air
+            sum1 = 0
+            sum2 = 0
+            try:
+                tk.Label(self.combo_frame, text=i['airDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=7)
 
-            tk.Label(self.combo_frame, text=i['intelligence'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=8)
+                pre = i['airDamage'].split("-")
+                # print(str(pre))
+                sum1 = int(sum1) + int(pre[0])
+                sum2 = int(sum2) + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['airDamage'] = totalDict['airDamage'] + final
+            except:
+                #print(e)
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=7)
 
-            tk.Label(self.combo_frame, text=i['strength'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=9)
+            #thunder
+            sum1 = 0
+            sum2 = 0
+            try:
+                tk.Label(self.combo_frame, text=i['thunderDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=8)
+                pre = i['thunderDamage'].split("-")
+                # print(str(pre))
+                sum1 = int(sum1) + int(pre[0])
+                sum2 = int(sum2) + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['thunderDamage'] = totalDict['thunderDamage'] + final
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=8)
 
-            tk.Label(self.combo_frame, text=i['dexterity'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=10)
-
-            tk.Label(self.combo_frame, text=i['agility'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=11)
-
-            tk.Label(self.combo_frame, text=i['tier'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=12)
+            #earth
+            sum1 = 0
+            sum2 = 0
+            try:
+                tk.Label(self.combo_frame, text=i['earthDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=9)
+                pre = i['earthDamage'].split("-")
+                # print(str(pre))
+                sum1 = int(sum1) + int(pre[0])
+                sum2 = int(sum2) + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['earthDamage'] = totalDict['earthDamage'] + final
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=9)
 
             try:
                 tk.Label(self.combo_frame, text=i['attackSpeed'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=10)
+                totalDict['attackSpeed'] = totalDict['attackSpeed'] + i['attackSpeed']
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=10)
+
+
+            try:
+                tk.Label(self.combo_frame, text=i['health'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=11)
+                totalDict['health'] = totalDict['health'] + int(i['health'])
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=11)
+
+            try:
+                tk.Label(self.combo_frame, text=i['fireDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=12)
+                totalDict['fireDefense'] = totalDict['fireDefense'] + int(i['fireDefense'])
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=12)
+
+            try:
+                tk.Label(self.combo_frame, text=i['waterDefense'], relief="groove", width=15,
                          font=("Arial", 8, "bold")).grid(row=cnt2, column=13)
+                totalDict['waterDefense'] = totalDict['waterDefense'] + int(i['waterDefense'])
+            except:
+                tk.Label(self.combo_frame, text='0', relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=13)
+
+            try:
+                tk.Label(self.combo_frame, text=i['airDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=14)
+                totalDict['airDefense'] = totalDict['airDefense'] + int(i['airDefense'])
             except:
                 tk.Label(self.combo_frame, text="0", relief="groove", width=15,
-                         font=("Arial", 8, "bold")).grid(row=cnt2, column=13)
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=14)
 
-            tk.Label(self.combo_frame, text=i['manaRegen'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=14)
+            try :
+                tk.Label(self.combo_frame, text=i['thunderDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=15)
+                totalDict['thunderDefense'] = totalDict['thunderDefense'] + int(i['thunderDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=15)
 
-            tk.Label(self.combo_frame, text=i['manaSteal'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=15)
 
-            tk.Label(self.combo_frame, text="none", relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=16)
+            try :
+                tk.Label(self.combo_frame, text=i['earthDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=16)
+                totalDict['earthDefense'] = totalDict['earthDefense'] + int(i['earthDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=16)
 
-            tk.Label(self.combo_frame, text=i['soulPoints'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=17)
+            try :
+                tk.Label(self.combo_frame, text=i['strength'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=17)
+                totalDict['strength'] = totalDict['strength'] + int(i['strength'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=17)
 
-            tk.Label(self.combo_frame, text=i['speed'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=18)
+            try :
+                tk.Label(self.combo_frame, text=i['dexterity'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=18)
+                totalDict['dexterity'] = totalDict['dexterity'] + int(i['dexterity'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=18)
 
-            tk.Label(self.combo_frame, text=i['sprint'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=19)
+            try :
+                tk.Label(self.combo_frame, text=i['intelligence'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=19)
+                totalDict['intelligence'] = totalDict['intelligence'] + int(i['intelligence'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=19)
 
-            tk.Label(self.combo_frame, text=i['sprintRegen'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=20)
+            try :
+                tk.Label(self.combo_frame, text=i['agility'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=20)
+                totalDict['agility'] = totalDict['agility'] + int(i['agility'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=20)
 
-            tk.Label(self.combo_frame, text=i['jumpHeight'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=21)
+            try:
+                tk.Label(self.combo_frame, text=i['defense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=21)
+                totalDict['defense'] = totalDict['defense'] + int(i['defense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=21)
 
-            tk.Label(self.combo_frame, text=i['lootBonus'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=22)
+            try :
+                tk.Label(self.combo_frame, text=i['healthRegen'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=22)
+                totalDict['healthRegen'] = totalDict['healthRegen'] + int(i['healthRegen'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=22)
 
-            tk.Label(self.combo_frame, text=i['xpBonus'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=23)
+            try :
+                tk.Label(self.combo_frame, text=i['manaRegen'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=23)
+                totalDict['manaRegen'] = totalDict['manaRegen'] + int(i['manaRegen'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=23)
 
-            tk.Label(self.combo_frame, text=i['lootQuality'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=24)
+            try :
+                tk.Label(self.combo_frame, text=i['spellDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=24)
+                totalDict['spellDamage'] = totalDict['spellDamage'] + int(i['spellDamage'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=24)
 
-            tk.Label(self.combo_frame, text=i['spellCostPct1'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=25)
+            try :
+                tk.Label(self.combo_frame, text=i['damageBonus'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=25)
+                totalDict['damageBonus'] = totalDict['damageBonus'] + int(i['damageBonus'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=25)
 
-            tk.Label(self.combo_frame, text=i['poison'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=26)
+            try :
+                tk.Label(self.combo_frame, text=i['lifeSteal'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=26)
+                totalDict['lifeSteal'] = totalDict['lifeSteal'] + int(i['lifeSteal'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=26)
 
-            tk.Label(self.combo_frame, text=i['exploding'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=27)
+            try :
+                tk.Label(self.combo_frame, text=i['manaSteal'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=27)
+                totalDict['manaSteal'] = totalDict['manaSteal'] + int(i['manaSteal'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=27)
 
-            tk.Label(self.combo_frame, text='none', relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=28)
+            try :
+                tk.Label(self.combo_frame, text=i['xpBonus'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=28)
+                totalDict['xpBonus'] = totalDict['xpBonus'] + int(i['xpBonus'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=28)
 
-            tk.Label(self.combo_frame, text=i['spellDamage'], relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=29)
+            try :
+                tk.Label(self.combo_frame, text=i['lootBonus'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=29)
+                totalDict['lootBonus'] = totalDict['lootBonus'] + int(i['lootBonus'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=29)
 
-            tk.Label(self.combo_frame, text='none', relief="groove", width=15,
-                     font=("Arial", 8, "bold")).grid(row=cnt2, column=30)
+            try :
+                tk.Label(self.combo_frame, text=i['reflection'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=30)
+                totalDict['reflection'] = totalDict['reflection'] + int(i['reflection'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=30)
+
+            try :
+                tk.Label(self.combo_frame, text=i['strengthPoints'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=31)
+                totalDict['strengthPoints'] = totalDict['strengthPoints'] + int(i['strengthPoints'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=31)
+
+            try :
+                tk.Label(self.combo_frame, text=i['dexterityPoints'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=32)
+                totalDict['dexterityPoints'] = totalDict['dexterityPoints'] + int(i['dexterityPoints'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=32)
+
+            try :
+                tk.Label(self.combo_frame, text=i['intelligencePoints'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=33)
+                totalDict['intelligencePoints'] = totalDict['intelligencePoints'] + int(i['intelligencePoints'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=33)
+
+            try :
+                tk.Label(self.combo_frame, text=i['agilityPoints'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=34)
+                totalDict['agilityPoints'] = totalDict['agilityPoints'] + int(i['agilityPoints'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=34)
+
+            try :
+                tk.Label(self.combo_frame, text=i['defensePoints'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=35)
+                totalDict['defensePoints'] = totalDict['defensePoints'] + int(i['defensePoints'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=35)
+
+            try :
+                tk.Label(self.combo_frame, text=i['thorns'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=36)
+                totalDict['thorns'] = totalDict['thorns'] + int(i['thorns'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=36)
+
+            try :
+                tk.Label(self.combo_frame, text=i['exploding'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=37)
+                totalDict['exploding'] = totalDict['exploding'] + int(i['exploding'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=37)
+
+            try :
+                tk.Label(self.combo_frame, text=i['speed'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=38)
+                totalDict['speed'] = totalDict['speed'] + int(i['speed'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=38)
+
+            try :
+                tk.Label(self.combo_frame, text=i['attackSpeedBonus'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=39)
+                totalDict['attackSpeedBonus'] = totalDict['attackSpeedBonus'] + int(i['attackSpeedBonus'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=39)
+
+            try :
+                tk.Label(self.combo_frame, text=i['poison'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=40)
+                totalDict['poison'] = totalDict['poison'] + int(i['poison'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=40)
+
+            try :
+                tk.Label(self.combo_frame, text=i['healthBonus'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=41)
+                totalDict['healthBonus'] = totalDict['healthBonus'] + int(i['healthBonus'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=41)
+
+            try :
+                tk.Label(self.combo_frame, text=i['soulPoints'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=42)
+                totalDict['soulPoints'] = totalDict['soulPoints'] + int(i['soulPoints'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=42)
+
+            try :
+                tk.Label(self.combo_frame, text=i['emeraldStealing'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=43)
+                totalDict['emeraldStealing'] = totalDict['emeraldStealing'] + int(i['emeraldStealing'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=43)
+
+            try :
+                tk.Label(self.combo_frame, text=i['healthRegenRaw'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=44)
+                totalDict['healthRegenRaw'] = totalDict['healthRegenRaw'] + int(i['healthRegenRaw'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=44)
+
+            try :
+                tk.Label(self.combo_frame, text=i['spellDamageRaw'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=45)
+                totalDict['spellDamageRaw'] = totalDict['spellDamageRaw'] + int(i['spellDamageRaw'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=45)
+
+            #Here
+            try :
+                tk.Label(self.combo_frame, text=i['damageBonusRaw'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=46)
+                totalDict['damageBonusRaw'] = totalDict['damageBonusRaw'] + int(i['damageBonusRaw'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=46)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusFireDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=47)
+                totalDict['bonusFireDamage'] = totalDict['bonusFireDamage'] + int(i['bonusFireDamage'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=47)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusWaterDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=48)
+                totalDict['bonusWaterDamage'] = totalDict['bonusWaterDamage'] + int(i['bonusWaterDamage'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=48)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusAirDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=49)
+                totalDict['bonusAirDamage'] = totalDict['bonusAirDamage'] + int(i['bonusAirDamage'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=49)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusThunderDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=50)
+                totalDict['bonusThunderDamage'] = totalDict['bonusThunderDamage'] + int(i['bonusThunderDamage'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=50)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusEarthDamage'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=51)
+                totalDict['bonusEarthDamage'] = totalDict['bonusEarthDamage'] + int(i['bonusEarthDamage'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=51)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusFireDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=52)
+                totalDict['bonusFireDefense'] = totalDict['bonusFireDefense'] + int(i['bonusFireDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=52)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusWaterDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=53)
+                totalDict['bonusWaterDefense'] = totalDict['bonusWaterDefense'] + int(i['bonusWaterDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=53)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusAirDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=54)
+                totalDict['bonusAirDefense'] = totalDict['bonusAirDefense'] + int(i['bonusAirDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=54)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusThunderDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=55)
+                totalDict['bonusThunderDefense'] = totalDict['bonusThunderDefense'] + int(i['bonusThunderDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=55)
+
+            try :
+                tk.Label(self.combo_frame, text=i['bonusEarthDefense'], relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=56)
+                totalDict['bonusEarthDefense'] = totalDict['bonusEarthDefense'] + int(i['bonusEarthDefense'])
+            except :
+                tk.Label(self.combo_frame, text="0", relief="groove", width=15,
+                         font=("Arial", 8, "bold")).grid(row=cnt2, column=56)
 
             cnt2 += 1
             cnt3 += 1
+
+
+
+        cnt4 = 0
+        for o in totalDict:
+            #print("QUI",totalDict['Damage'])
+            tk.Label(self.combo_frame, text=totalDict[o],relief="groove", width=15,
+                 font=("Arial", 8, "bold")).grid(row=cnt2, column=cnt4, pady=15)
+            cnt4 += 1
+
+
 
