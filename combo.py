@@ -1,5 +1,4 @@
 # Project modules
-import requests
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
@@ -13,26 +12,6 @@ from test import checkCombo
 from test import customFile
 import os
 import random
-
-
-
-class MenuBar:
-
-    def __init__(self, parent):
-        font = ('Corbel', 14)
-        font_2 = ('Corbel', 10)
-
-        menubar = tk.Menu(parent.root, font=font)
-        parent.root.config(menu=menubar)
-
-        file_dropdown = tk.Menu(menubar, font=font_2, tearoff=0)
-
-        file_dropdown.add_command(label="Background Color",
-                                  command=parent.custom_color)
-        file_dropdown.add_command(label="Custom file",
-                                  command=parent.custom_folder)
-
-        menubar.add_cascade(label="Settings", menu=file_dropdown)
 
 
 class ScrollableFrame(ttk.Frame):
@@ -59,7 +38,7 @@ class ScrollableFrame(ttk.Frame):
 class ScrollableFrame_x(ttk.Frame):
     def __init__(self, container, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
-        canvas = tk.Canvas(self, borderwidth=0, highlightthickness = 0, relief="groove", width=1000, height=300)
+        canvas = tk.Canvas(self, borderwidth=0, highlightthickness = 0, relief="groove", width=1000, height=280, bg="#c8d6e5")
         scrollbar = ttk.Scrollbar(self, orient="horizontal", command=canvas.xview)
         self.scrollable_frame = ttk.Frame(canvas)
 
@@ -74,13 +53,13 @@ class ScrollableFrame_x(ttk.Frame):
 
         canvas.configure(xscrollcommand=scrollbar.set)
 
-        canvas.pack(side="left", fill="both", expand=True)
+        canvas.pack(side="top", fill="both", expand=True)
         scrollbar.pack(side="bottom", fill="both")
 
 
 class Root:
     def __init__(self, root):
-        root.geometry("1300x400")
+        root.geometry("1300x430")
         # root.resizable(False, False)
         root.title("Wynncraft Items Selection")  # Window title
 
@@ -90,34 +69,38 @@ class Root:
         font = ("Arial", 12)
 
         self.root = root
+        self.root.config(background='#222f3e')
         self.frame2 = ScrollableFrame_x(root)
         self.frame_2 = tk.Frame(self.frame2.scrollable_frame)
+        self.frame_2.config(background="#c8d6e5")
 
         self.frame_3 = tk.Frame(root)
+        self.frame_3.config(background='#222f3e')
 
-        self.title2 = tk.Label(self.root, text="")
-        self.title2.pack()
+        self.title2 = tk.Label(self.root, text="", bg="#576574", padx=20, pady=5, font=("Arial", 16, "bold"))
+        self.title2.pack(pady=5)
 
         self.combo_frame = tk.Frame(self.frame_2)
+        self.combo_frame.config(background='#222f3e')
         self.show()
 
-        forward = tk.Button(self.frame_3, text=">>>", width=10, bg="green", command=self.next)
+        forward = tk.Button(self.frame_3,
+                            text=">>>", width=10, bg="#1dd1a1", command=self.next, font=("Arial", 12, "bold"), bd=4)
         forward.grid(row=0, column=1)
 
-        back = tk.Button(self.frame_3, text="<<<", width=10, bg="red", command=self.back)
-        back.grid(row=0, column=0)
+        back = tk.Button(self.frame_3,
+                         text="<<<", width=10, bg="#ff6b6b", command=self.back, font=("Arial", 12, "bold"), bd=4)
+        back.grid(row=0, column=0, padx=5, pady=5)
 
         self.page_s = tk.Entry(self.frame_3)
         self.page_s.grid(row=0, column=2)
 
-        page_search = tk.Button(self.frame_3, text="🔎", width=10, command=self.page_search)
+        page_search = tk.Button(self.frame_3, text="Search", width=10, command=self.page_search)
         page_search.grid(row=1, column=2)
 
-        csv = tk.Button(self.frame_3, text="CSV", width=10, command=self.create_csv)
-        csv.grid(row=1, column=0)
-
-        star = tk.Button(self.frame_3, text="★", width=10)
-        star.grid(row=1, column=1)
+        csv = tk.Button(self.frame_3, text="CSV", width=20, command=self.create_csv, font=("Arial", 10, "bold"), bd=4,
+                        bg="#54a0ff")
+        csv.grid(row=1, column=0, columnspan=2)
 
         self.combo_frame.grid()
         self.frame_2.pack()
@@ -160,11 +143,12 @@ class Root:
             'health', 'fireDefense', 'waterDefense', 'airDefense', 'thunderDefense', 'earthDefense', 'strength',
             'dexterity', 'intelligence', 'agility', 'defense', 'healthRegen', 'manaRegen', 'spellDamage', 'damageBonus',
             'lifeSteal', 'manaSteal', 'xpBonus', 'lootBonus',
-            'reflection', 'strengthPoints', 'dexterityPoints', 'intelligencePoints', 'agilityPoints', 'defensePoints',
-            'thorns', 'exploding', 'speed', 'attackSpeedBonus', 'poison', 'healthBonus',
-            'soulPoints', 'emeraldStealing', 'healthRegenRaw', 'spellDamageRaw', 'damageBonusRaw', 'bonusFireDamage',
-            'bonusWaterDamage', 'bonusAirDamage', 'bonusThunderDamage', 'bonusEarthDamage', 'bonusFireDefense',
-            'bonusWaterDefense',
+            'reflection', 'strengthPoints', 'dexterityPoints', 'intelligencePoints',
+            'agilityPoints', 'defensePoints', 'thorns', 'exploding',
+            'speed', 'attackSpeedBonus', 'poison', 'healthBonus',
+            'soulPoints', 'emeraldStealing', 'healthRegenRaw', 'spellDamageRaw',
+            'damageBonusRaw', 'bonusFireDamage', 'bonusWaterDamage', 'bonusAirDamage',
+            'bonusThunderDamage', 'bonusEarthDamage', 'bonusFireDefense', 'bonusWaterDefense',
             'bonusAirDefense', 'bonusThunderDefense', 'bonusEarthDefense'
         ]
 
@@ -717,6 +701,7 @@ class Root:
     def create_csv(self):
         import csv
 
+        print("START CSV writing process")
         if len(customFile()) > 0:
             file = customFile()
             print("You are now using the file: %s" % file)
@@ -732,6 +717,8 @@ class Root:
         else :
             self.file = self.file + ".txt"
 
+        print(f"CSV file : {self.file}")
+
         with open("config/custom_csv_file.txt", "w") as f:
             f.write(self.file)
 
@@ -739,8 +726,18 @@ class Root:
 
             column_to_show = [
                 'Build', 'Boots', 'Bracelet', 'Chestplate', 'Helmet', 'Leggings', 'Necklace', 'Ring1', 'Ring2', 'Weapon',
-                'totDamage',
-                'totHealth', 'totFireDefense', 'totWaterDefense', 'totAirDefense', 'totThunderDefense', 'totEarthDefense',
+                'totDamage',  'totFireDamage', 'totWaterDamage', 'totAirDamage', 'totThunderDamage', 'totEarthDamage',
+                'totAttackSpeed', 'totHealth', 'totFireDefense', 'totWaterDefense', 'totAirDefense', 'totThunderDefense',
+                'totEarthDefense', 'totStrength', 'totDexterity', 'totIntelligence', 'totAgility', 'totDefense',
+                'totHealthRegen', 'totManaRegen', 'totSpellDamage', 'totDamageBonus',
+                'totLifeSteal', 'totManaSteal', 'totXpBonus', 'totLootBonus',
+                'totReflection', 'totStrengthPoints', 'totDexterityPoints', 'totIntelligencePoints',
+                'totAgilityPoints', 'totDefensePoints', 'totThorns', 'totExploding',
+                'totSpeed', 'totAttackSpeedBonus', 'totPoison', 'totHealthBonus',
+                'totSoulPoints', 'totEmeraldStealing', 'totHealthRegenRaw', 'totSpellDamageRaw',
+                'totDamageBonusRaw', 'totBonusFireDamage', 'totBonusWaterDamage', 'totBonusAirDamage',
+                'totBonusThunderDamage', 'totBonusEarthDamage', 'totBonusFireDefense', 'totBonusWaterDefense',
+                'totBonusAirDefense', 'totBonusThunderDefense', 'totBonusEarthDefense'
             ]
 
             totalDict = {
@@ -783,21 +780,139 @@ class Root:
                 totalDict['airDefense'] = 0
                 totalDict['thunderDefense'] = 0
                 totalDict['earthDefense'] = 0
+                totalDict['fireDamage'] = ''
+                totalDict['waterDamage'] = ''
+                totalDict['airDamage'] = ''
+                totalDict['thunderDamage'] = ''
+                totalDict['earthDamage'] = ''
+                totalDict['attackSpeed'] = ''
 
-                for i in range(8):
-                    print(i, totalDict['health'] + int(json_data[combo][i]['health']))
-                    totalDict['health'] = totalDict['health'] + int(json_data[combo][i]['health'])
+                totalDict['healthRegen'] = 0
+                totalDict['manaRegen'] = 0
+                totalDict['spellDamage'] = 0
+                totalDict['damageBonus'] = 0
+
+                totalDict['lifeSteal'] = 0
+                totalDict['manaSteal'] = 0
+                totalDict['xpBonus'] = 0
+                totalDict['lootBonus'] = 0
+
+                totalDict['reflection'] = 0
+                totalDict['strengthPoints'] = 0
+                totalDict['dexterityPoints'] = 0
+                totalDict['intelligencePoints'] = 0
+
+                totalDict['agilityPoints'] = 0
+                totalDict['defensePoints'] = 0
+                totalDict['thorns'] = 0
+                totalDict['exploding'] = 0
+
+                totalDict['speed'] = 0
+                totalDict['attackSpeedBonus'] = 0
+                totalDict['poison'] = 0
+                totalDict['healthBonus'] = 0
+
+                totalDict['soulPoints'] = 0
+                totalDict['emeraldStealing'] = 0
+                totalDict['healthRegenRaw'] = 0
+                totalDict['spellDamageRaw'] = 0
+
+                totalDict['damageBonusRaw'] = 0
+                totalDict['bonusFireDamage'] = 0
+                totalDict['bonusWaterDamage'] = 0
+                totalDict['bonusAirDamage'] = 0
+
+                totalDict['bonusThunderDamage'] = 0
+                totalDict['bonusEarthDamage'] = 0
+                totalDict['bonusFireDefense'] = 0
+                totalDict['bonusWaterDefense'] = 0
+                totalDict['bonusAirDefense'] = 0
+                totalDict['bonusThunderDefense'] = 0
+                totalDict['bonusEarthDefense'] = 0
 
 
-                    totalDict['fireDefense'] = totalDict['fireDefense'] + int(json_data[combo][i]['fireDefense'])
-                    totalDict['waterDefense'] = totalDict['waterDefense'] + int(json_data[combo][i]['waterDefense'])
-                    totalDict['airDefense'] = totalDict['airDefense'] + int(json_data[combo][i]['airDefense'])
-                    totalDict['thunderDefense'] = totalDict['thunderDefense'] + int(json_data[combo][i]['thunderDefense'])
-                    totalDict['earthDefense'] = totalDict['earthDefense'] + int(json_data[combo][i]['earthDefense'])
-                    #totalDict['fireDefense'] = totalDict['fireDefense'] + int(json_data[combo][i]['fireDefense'])
-                #print(json_data[combo][1])
-                #print(totalDict['health'] + int(json_data[combo][1]['health']))
+                for i in range(9):
+                    #print(i, totalDict['health'] + int(json_data[combo][i]['health']))
+                    try:
+                        totalDict['health'] = totalDict['health'] + int(json_data[combo][i]['health'])
+                    except:
+                        pass
 
+                    try:
+                        totalDict['fireDefense'] = totalDict['fireDefense'] + int(json_data[combo][i]['fireDefense'])
+                    except:
+                        pass
+
+                    try:
+                        totalDict['waterDefense'] = totalDict['waterDefense'] + int(json_data[combo][i]['waterDefense'])
+                    except:
+                        pass
+
+                    try:
+                        totalDict['airDefense'] = totalDict['airDefense'] + int(json_data[combo][i]['airDefense'])
+                    except:
+                        pass
+
+                    try:
+                        totalDict['thunderDefense'] = totalDict['thunderDefense'] + int(json_data[combo][i]['thunderDefense'])
+                    except:
+                        pass
+                    try:
+                        totalDict['earthDefense'] = totalDict['earthDefense'] + int(json_data[combo][i]['earthDefense'])
+                    except:
+                        pass
+
+                    totalDict['strength'] = totalDict['strength'] + int(json_data[combo][i]['strength'])
+                    #print(i, totalDict['strength'], int(json_data[combo][i]['strength']))
+                    totalDict['dexterity'] = totalDict['dexterity'] + int(json_data[combo][i]['dexterity'])
+                    totalDict['intelligence'] = totalDict['intelligence'] + int(json_data[combo][i]['intelligence'])
+                    totalDict['agility'] = totalDict['agility'] + int(json_data[combo][i]['agility'])
+                    totalDict['defense'] = totalDict['defense'] + int(json_data[combo][i]['defense'])
+
+                    totalDict['healthRegen'] = totalDict['healthRegen'] + int(json_data[combo][i]['healthRegen'])
+                    totalDict['manaRegen'] = totalDict['manaRegen'] + int(json_data[combo][i]['manaRegen'])
+                    totalDict['spellDamage'] = totalDict['spellDamage'] + int(json_data[combo][i]['spellDamage'])
+                    totalDict['damageBonus'] = totalDict['damageBonus'] + int(json_data[combo][i]['damageBonus'])
+
+                    totalDict['lifeSteal'] = totalDict['lifeSteal'] + int(json_data[combo][i]['lifeSteal'])
+                    totalDict['manaSteal'] = totalDict['manaSteal'] + int(json_data[combo][i]['manaSteal'])
+                    totalDict['xpBonus'] = totalDict['xpBonus'] + int(json_data[combo][i]['xpBonus'])
+                    totalDict['lootBonus'] = totalDict['lootBonus'] + int(json_data[combo][i]['lootBonus'])
+
+                    totalDict['reflection'] = totalDict['reflection'] + int(json_data[combo][i]['reflection'])
+                    totalDict['strengthPoints'] = totalDict['strengthPoints'] + int(json_data[combo][i]['strengthPoints'])
+                    totalDict['dexterityPoints'] = totalDict['dexterityPoints'] + int(json_data[combo][i]['dexterityPoints'])
+                    totalDict['intelligencePoints'] = totalDict['intelligencePoints'] + int(json_data[combo][i]['intelligencePoints'])
+
+                    totalDict['agilityPoints'] = totalDict['agilityPoints'] + int(json_data[combo][i]['agilityPoints'])
+                    totalDict['defensePoints'] = totalDict['defensePoints'] + int(json_data[combo][i]['defensePoints'])
+                    totalDict['thorns'] = totalDict['thorns'] + int(json_data[combo][i]['thorns'])
+                    totalDict['exploding'] = totalDict['exploding'] + int(json_data[combo][i]['exploding'])
+
+                    totalDict['speed'] = totalDict['speed'] + int(json_data[combo][i]['speed'])
+                    totalDict['attackSpeedBonus'] = totalDict['attackSpeedBonus'] + int(json_data[combo][i]['attackSpeedBonus'])
+                    totalDict['poison'] = totalDict['poison'] + int(json_data[combo][i]['poison'])
+                    totalDict['healthBonus'] = totalDict['healthBonus'] + int(json_data[combo][i]['healthBonus'])
+
+                    totalDict['soulPoints'] = totalDict['soulPoints'] + int(json_data[combo][i]['soulPoints'])
+                    totalDict['emeraldStealing'] = totalDict['emeraldStealing'] + int(json_data[combo][i]['emeraldStealing'])
+                    totalDict['healthRegenRaw'] = totalDict['healthRegenRaw'] + int(json_data[combo][i]['healthRegenRaw'])
+                    totalDict['spellDamageRaw'] = totalDict['spellDamageRaw'] + int(json_data[combo][i]['spellDamageRaw'])
+
+                    totalDict['damageBonusRaw'] = totalDict['damageBonusRaw'] + int(json_data[combo][i]['damageBonusRaw'])
+                    totalDict['bonusFireDamage'] = totalDict['bonusFireDamage'] + int(json_data[combo][i]['bonusFireDamage'])
+                    totalDict['bonusWaterDamage'] = totalDict['bonusWaterDamage'] + int(json_data[combo][i]['bonusWaterDamage'])
+                    totalDict['bonusAirDamage'] = totalDict['bonusAirDamage'] + int(json_data[combo][i]['bonusAirDamage'])
+
+                    totalDict['bonusThunderDamage'] = totalDict['bonusThunderDamage'] + int(json_data[combo][i]['bonusThunderDamage'])
+                    totalDict['bonusEarthDamage'] = totalDict['bonusEarthDamage'] + int(json_data[combo][i]['bonusEarthDamage'])
+                    totalDict['bonusFireDefense'] = totalDict['bonusFireDefense'] + int(json_data[combo][i]['bonusFireDefense'])
+                    totalDict['bonusWaterDefense'] = totalDict['bonusWaterDefense'] + int(json_data[combo][i]['bonusWaterDefense'])
+                    totalDict['bonusAirDefense'] = totalDict['bonusAirDefense'] + int(json_data[combo][i]['bonusAirDefense'])
+                    totalDict['bonusThunderDefense'] = totalDict['bonusThunderDefense'] + int(json_data[combo][i]['bonusThunderDefense'])
+                    totalDict['bonusEarthDefense'] = totalDict['bonusEarthDefense'] + int(json_data[combo][i]['bonusEarthDefense'])
+
+                #damage
                 pre = json_data[combo][8]['damage'].split("-")
                 # print(str(pre))
                 sum1 = sum1 + int(pre[0])
@@ -805,6 +920,69 @@ class Root:
                 final = str(sum1) + "-" + str(sum2)
                 # print(final)
                 totalDict['Damage'] = totalDict['Damage'] + final
+
+                sum1 = 0
+                sum2 = 0
+
+                #fire damage
+                pre = json_data[combo][8]['fireDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['fireDamage'] = totalDict['fireDamage'] + final
+
+                sum1 = 0
+                sum2 = 0
+
+                #water damage
+                pre = json_data[combo][8]['waterDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['waterDamage'] = totalDict['waterDamage'] + final
+
+                sum1 = 0
+                sum2 = 0
+
+                # air damage
+                pre = json_data[combo][8]['airDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['airDamage'] = totalDict['airDamage'] + final
+
+                sum1 = 0
+                sum2 = 0
+
+                # thunder damage
+                pre = json_data[combo][8]['thunderDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['thunderDamage'] = totalDict['thunderDamage'] + final
+
+                sum1 = 0
+                sum2 = 0
+
+                # earth damage
+                pre = json_data[combo][8]['earthDamage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['earthDamage'] = totalDict['earthDamage'] + final
+
+                totalDict['attackSpeed'] = totalDict['attackSpeed'] + json_data[combo][8]['attackSpeed']
+
 
                 dictToWrite = {
                     'Build' : combo,
@@ -820,17 +998,81 @@ class Root:
                     'totHealth' : totalDict['health'],
 
                     'totDamage' : totalDict['Damage'],
+                    'totFireDamage' : totalDict['fireDamage'],
+                    'totWaterDamage' : totalDict['waterDamage'],
+                    'totAirDamage' : totalDict['airDamage'],
+                    'totThunderDamage' : totalDict['thunderDamage'],
+                    'totEarthDamage' : totalDict['earthDamage'],
+                    'totAttackSpeed' : totalDict['attackSpeed'],
 
                     'totFireDefense' : totalDict['fireDefense'],
                     'totWaterDefense' : totalDict['waterDefense'],
                     'totAirDefense' : totalDict['airDefense'],
                     'totThunderDefense' : totalDict['thunderDefense'],
-                    'totEarthDefense' : totalDict['earthDefense']
+                    'totEarthDefense' : totalDict['earthDefense'],
+
+                    'totStrength' : totalDict['strength'],
+                    'totDexterity' : totalDict['dexterity'],
+                    'totIntelligence' : totalDict['intelligence'],
+                    'totAgility' : totalDict['agility'],
+                    'totDefense' : totalDict['defense'],
+
+                    'totHealthRegen' : totalDict['healthRegen'],
+                    'totManaRegen' : totalDict['manaRegen'],
+                    'totSpellDamage' : totalDict['spellDamage'],
+                    'totDamageBonus' : totalDict['damageBonus'],
+
+                    'totLifeSteal' : totalDict['lifeSteal'],
+                    'totManaSteal' : totalDict['manaSteal'],
+                    'totXpBonus' : totalDict['xpBonus'],
+                    'totLootBonus' : totalDict['lootBonus'],
+
+                    'totReflection' : totalDict['reflection'],
+                    'totStrengthPoints' : totalDict['strengthPoints'],
+                    'totDexterityPoints' : totalDict['dexterityPoints'],
+                    'totIntelligencePoints' : totalDict['intelligencePoints'],
+
+                    'totAgilityPoints' : totalDict['agilityPoints'],
+                    'totDefensePoints' : totalDict['defensePoints'],
+                    'totThorns' : totalDict['thorns'],
+                    'totExploding' : totalDict['exploding'],
+
+                    'totSpeed' : totalDict['speed'],
+                    'totAttackSpeedBonus' : totalDict['attackSpeedBonus'],
+                    'totPoison' : totalDict['poison'],
+                    'totHealthBonus' : totalDict['healthBonus'],
+
+                    'totSoulPoints' : totalDict['soulPoints'],
+                    'totEmeraldStealing' : totalDict['emeraldStealing'],
+                    'totHealthRegenRaw' : totalDict['healthRegenRaw'],
+                    'totSpellDamageRaw' : totalDict['spellDamageRaw'],
+
+                    'totDamageBonusRaw' : totalDict['damageBonusRaw'],
+                    'totBonusFireDamage' : totalDict['bonusFireDamage'],
+                    'totBonusWaterDamage' : totalDict['bonusWaterDamage'],
+                    'totBonusAirDamage' : totalDict['bonusAirDamage'],
+
+                    'totBonusThunderDamage' : totalDict['bonusThunderDamage'],
+                    'totBonusEarthDamage' : totalDict['bonusEarthDamage'],
+                    'totBonusFireDefense' : totalDict['bonusFireDefense'],
+                    'totBonusWaterDefense' : totalDict['bonusWaterDefense'],
+                    'totBonusAirDefense' : totalDict['bonusAirDefense'],
+                    'totBonusThunderDefense' : totalDict['bonusThunderDefense'],
+                    'totBonusEarthDefense' : totalDict['bonusEarthDefense']
 
                                 }
+
+                #print(dictToWrite)
                 writer.writerow(dictToWrite)
 
-            # Da finire
+                totalDict['strength'] = 0
+                totalDict['dexterity'] = 0
+                totalDict['intelligence'] = 0
+                totalDict['agility'] = 0
+                totalDict['defense'] = 0
+
+            print("CSV process END")
+
 
 
 

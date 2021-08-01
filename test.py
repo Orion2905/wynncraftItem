@@ -95,3 +95,12 @@ def customFile():
             return file
         else:
             return False
+
+def customCSVFile():
+    with open("config/custom_csv_file.txt", "r") as f:
+        file = f.read()
+        if len(file) > 0:
+            #print("sii")
+            return file
+        else:
+            return False
