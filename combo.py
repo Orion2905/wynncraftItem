@@ -84,6 +84,7 @@ class Root:
         # root.resizable(False, False)
         root.title("Wynncraft Items Selection")  # Window title
 
+
         self.page = 0
 
         font = ("Arial", 12)
@@ -112,7 +113,7 @@ class Root:
         page_search = tk.Button(self.frame_3, text="🔎", width=10, command=self.page_search)
         page_search.grid(row=1, column=2)
 
-        csv = tk.Button(self.frame_3, text="CSV", width=10)
+        csv = tk.Button(self.frame_3, text="CSV", width=10, command=self.create_csv)
         csv.grid(row=1, column=0)
 
         star = tk.Button(self.frame_3, text="★", width=10)
@@ -144,6 +145,8 @@ class Root:
 
 
     def show(self):
+
+
         if len(customFile()) > 0:
             file = customFile()
             print("You are now using the file: %s" % file)
@@ -166,24 +169,25 @@ class Root:
         ]
 
         totalDict = {
-            'Name':'TOTAL BUILD', 'Category':0, 'Type':0, 'Tier':0, 'Damage':'', 'fireDamage':'',
-            'waterDamage':'', 'airDamage':'', 'thunderDamage':'',
-            'earthDamage':'', 'attackSpeed':'',
-            'health':0, 'fireDefense':0, 'waterDefense':0, 'airDefense':0, 'thunderDefense':0, 'earthDefense':0,
-            'strength':0,
-            'dexterity':0, 'intelligence':0, 'agility':0,
-            'defense':0, 'healthRegen':0, 'manaRegen':0, 'spellDamage':0, 'damageBonus':0,
-            'lifeSteal':0, 'manaSteal':0, 'xpBonus':0, 'lootBonus':0,
-            'reflection':0, 'strengthPoints':0, 'dexterityPoints':0, 'intelligencePoints':0,
-            'agilityPoints':0, 'defensePoints':0,
-            'thorns':0, 'exploding':0, 'speed':0, 'attackSpeedBonus':0, 'poison':0, 'healthBonus':0,
-            'soulPoints':0, 'emeraldStealing':0, 'healthRegenRaw':0, 'spellDamageRaw':0, 'damageBonusRaw':0,
-            'bonusFireDamage':0,
-            'bonusWaterDamage':0, 'bonusAirDamage':0, 'bonusThunderDamage':0, 'bonusEarthDamage':0,
-            'bonusFireDefense':0,
-            'bonusWaterDefense':0,
-            'bonusAirDefense':0, 'bonusThunderDefense':0, 'bonusEarthDefense':0
-                     }
+            'Name' : 'TOTAL BUILD', 'Category' : 0, 'Type' : 0, 'Tier' : 0, 'Damage' : '', 'fireDamage' : '',
+            'waterDamage' : '', 'airDamage' : '', 'thunderDamage' : '',
+            'earthDamage' : '', 'attackSpeed' : '',
+            'health' : 0, 'fireDefense' : 0, 'waterDefense' : 0, 'airDefense' : 0, 'thunderDefense' : 0,
+            'earthDefense' : 0,
+            'strength' : 0,
+            'dexterity' : 0, 'intelligence' : 0, 'agility' : 0,
+            'defense' : 0, 'healthRegen' : 0, 'manaRegen' : 0, 'spellDamage' : 0, 'damageBonus' : 0,
+            'lifeSteal' : 0, 'manaSteal' : 0, 'xpBonus' : 0, 'lootBonus' : 0,
+            'reflection' : 0, 'strengthPoints' : 0, 'dexterityPoints' : 0, 'intelligencePoints' : 0,
+            'agilityPoints' : 0, 'defensePoints' : 0,
+            'thorns' : 0, 'exploding' : 0, 'speed' : 0, 'attackSpeedBonus' : 0, 'poison' : 0, 'healthBonus' : 0,
+            'soulPoints' : 0, 'emeraldStealing' : 0, 'healthRegenRaw' : 0, 'spellDamageRaw' : 0, 'damageBonusRaw' : 0,
+            'bonusFireDamage' : 0,
+            'bonusWaterDamage' : 0, 'bonusAirDamage' : 0, 'bonusThunderDamage' : 0, 'bonusEarthDamage' : 0,
+            'bonusFireDefense' : 0,
+            'bonusWaterDefense' : 0,
+            'bonusAirDefense' : 0, 'bonusThunderDefense' : 0, 'bonusEarthDefense' : 0
+        }
 
 
         r = open(f"{file}", "r")
@@ -705,6 +709,132 @@ class Root:
             tk.Label(self.combo_frame, text=totalDict[o],relief="groove", width=15,
                  font=("Arial", 8, "bold")).grid(row=cnt2, column=cnt4, pady=15)
             cnt4 += 1
+
+        #function end
+
+
+
+    def create_csv(self):
+        import csv
+
+        if len(customFile()) > 0:
+            file = customFile()
+            print("You are now using the file: %s" % file)
+        else:
+            messagebox.showwarning(title="Warning!", message="please choose a file name\nsettings -> custom file")
+            file = "test.txt"
+
+        self.file = filedialog.asksaveasfilename(filetypes=(
+            ("CSV files", "*.csv"),
+        ))
+        if ".csv" in self.file :
+            pass
+        else :
+            self.file = self.file + ".txt"
+
+        with open("config/custom_csv_file.txt", "w") as f:
+            f.write(self.file)
+
+        with open(self.file, mode='w') as csv_file :
+
+            column_to_show = [
+                'Build', 'Boots', 'Bracelet', 'Chestplate', 'Helmet', 'Leggings', 'Necklace', 'Ring1', 'Ring2', 'Weapon',
+                'totDamage',
+                'totHealth', 'totFireDefense', 'totWaterDefense', 'totAirDefense', 'totThunderDefense', 'totEarthDefense',
+            ]
+
+            totalDict = {
+                'Damage' : '', 'fireDamage' : '',
+                'waterDamage' : '', 'airDamage' : '', 'thunderDamage' : '',
+                'earthDamage' : '', 'attackSpeed' : '',
+                'health' : 0, 'fireDefense' : 0, 'waterDefense' : 0, 'airDefense' : 0, 'thunderDefense' : 0,
+                'earthDefense' : 0,
+                'strength' : 0,
+                'dexterity' : 0, 'intelligence' : 0, 'agility' : 0,
+                'defense' : 0, 'healthRegen' : 0, 'manaRegen' : 0, 'spellDamage' : 0, 'damageBonus' : 0,
+                'lifeSteal' : 0, 'manaSteal' : 0, 'xpBonus' : 0, 'lootBonus' : 0,
+                'reflection' : 0, 'strengthPoints' : 0, 'dexterityPoints' : 0, 'intelligencePoints' : 0,
+                'agilityPoints' : 0, 'defensePoints' : 0,
+                'thorns' : 0, 'exploding' : 0, 'speed' : 0, 'attackSpeedBonus' : 0, 'poison' : 0, 'healthBonus' : 0,
+                'soulPoints' : 0, 'emeraldStealing' : 0, 'healthRegenRaw' : 0, 'spellDamageRaw' : 0,
+                'damageBonusRaw' : 0,
+                'bonusFireDamage' : 0,
+                'bonusWaterDamage' : 0, 'bonusAirDamage' : 0, 'bonusThunderDamage' : 0, 'bonusEarthDamage' : 0,
+                'bonusFireDefense' : 0,
+                'bonusWaterDefense' : 0,
+                'bonusAirDefense' : 0, 'bonusThunderDefense' : 0, 'bonusEarthDefense' : 0
+            }
+
+
+
+            writer = csv.DictWriter(csv_file, fieldnames=column_to_show, delimiter=';', quotechar='"')
+            writer.writeheader()
+            r = open(f"{file}", "r")
+            json_data = json.loads(r.read())
+            sum1 = 0
+            sum2 = 0
+            for combo in json_data:
+                sum1 = 0
+                sum2 = 0
+                totalDict['Damage'] = ''
+                totalDict['health'] = 0
+                totalDict['fireDefense'] = 0
+                totalDict['waterDefense'] = 0
+                totalDict['airDefense'] = 0
+                totalDict['thunderDefense'] = 0
+                totalDict['earthDefense'] = 0
+
+                for i in range(8):
+                    print(i, totalDict['health'] + int(json_data[combo][i]['health']))
+                    totalDict['health'] = totalDict['health'] + int(json_data[combo][i]['health'])
+
+
+                    totalDict['fireDefense'] = totalDict['fireDefense'] + int(json_data[combo][i]['fireDefense'])
+                    totalDict['waterDefense'] = totalDict['waterDefense'] + int(json_data[combo][i]['waterDefense'])
+                    totalDict['airDefense'] = totalDict['airDefense'] + int(json_data[combo][i]['airDefense'])
+                    totalDict['thunderDefense'] = totalDict['thunderDefense'] + int(json_data[combo][i]['thunderDefense'])
+                    totalDict['earthDefense'] = totalDict['earthDefense'] + int(json_data[combo][i]['earthDefense'])
+                    #totalDict['fireDefense'] = totalDict['fireDefense'] + int(json_data[combo][i]['fireDefense'])
+                #print(json_data[combo][1])
+                #print(totalDict['health'] + int(json_data[combo][1]['health']))
+
+                pre = json_data[combo][8]['damage'].split("-")
+                # print(str(pre))
+                sum1 = sum1 + int(pre[0])
+                sum2 = sum2 + int(pre[1])
+                final = str(sum1) + "-" + str(sum2)
+                # print(final)
+                totalDict['Damage'] = totalDict['Damage'] + final
+
+                dictToWrite = {
+                    'Build' : combo,
+                    'Boots' : json_data[combo][0]['name'],
+                    'Bracelet' : json_data[combo][1]['name'],
+                    'Chestplate' : json_data[combo][2]['name'],
+                    'Helmet' : json_data[combo][3]['name'],
+                    'Leggings' : json_data[combo][4]['name'],
+                    'Necklace' : json_data[combo][5]['name'],
+                    'Ring1' : json_data[combo][6]['name'],
+                    'Ring2' : json_data[combo][7]['name'],
+                    'Weapon' : json_data[combo][8]['name'],
+                    'totHealth' : totalDict['health'],
+
+                    'totDamage' : totalDict['Damage'],
+
+                    'totFireDefense' : totalDict['fireDefense'],
+                    'totWaterDefense' : totalDict['waterDefense'],
+                    'totAirDefense' : totalDict['airDefense'],
+                    'totThunderDefense' : totalDict['thunderDefense'],
+                    'totEarthDefense' : totalDict['earthDefense']
+
+                                }
+                writer.writerow(dictToWrite)
+
+            # Da finire
+
+
+
+
 
 
 

@@ -309,7 +309,8 @@ class MainApp: # The main class of the project
                 json_data = json.loads(r.read())
                 items = json_data['items']
                 value = random.randint(0, len(items))
-
+                if value == len(items):
+                    value = value - 1
                 #print("Lunghezza:",len(items))
                 #print("valore random:",value)
                 r.close()
@@ -359,7 +360,8 @@ class MainApp: # The main class of the project
                 .replace(" 'A r", ' "A r').replace(" 'A l", ' "A l').replace('I"m', "I'm")
                 .replace('[GREED]', '"[GREED]"').replace(" 'A s", ' "A s').replace(" 'A F", ' "A F')
                 .replace(" 'A G", ' "A G').replace(" 'A m", ' "A m')
-                .replace('"r', "'r").replace(" 'r", ' "r').replace('Ol" H', "Ol' H").replace('"Beware', 'Beware') + ','
+                .replace('"r', "'r").replace(" 'r", ' "r')
+                .replace('Ol" H', "Ol' H").replace('"Beware', 'Beware') + ','
             )
 
         self.root.update()
@@ -415,16 +417,21 @@ class MainApp: # The main class of the project
                 json_data = json.loads(r.read())
                 items = json_data['items']
                 value = random.randint(0, len(items))
+                #value = len(items)
+                if value == len(items):
+                    value = value - 1
+
                 #print("Lunghezza:",len(items))
                 #print("valore random:",value)
                 r.close()
+                #break_count = 0
                 break_count = 0
                 for j in items:
                     self.root.update()
                     # print("A")
                     break_count += 1
                     to_add = j
-                    #print(break_count, value)
+                    #print(x, break_count, value)
                     if break_count > value:
                         #print(to_add)
                         combo_list.append(to_add)
