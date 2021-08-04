@@ -1,1 +1,1 @@
-C:/Users/Orion Stanchieri/PycharmProjects/wynncraftItem/combination.csv
+C:\Users\Orion Stanchieri\PycharmProjects\wynncraftItem\combination.csv
